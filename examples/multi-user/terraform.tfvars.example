@@ -1,0 +1,28 @@
+# Network Configuration
+vpc_id = "vpc-xxxxxxxxx"
+subnet_ids = ["subnet-xxxxxxxx", "subnet-yyyyyyyy"]
+
+# IAM Roles - Replace with your actual role ARNs
+execution_role_arn = "arn:aws:iam::123456789012:role/SageMakerExecutionRole"
+team_lead_role_arn = "arn:aws:iam::123456789012:role/SageMakerTeamLeadRole"
+senior_ds_role_arn = "arn:aws:iam::123456789012:role/SageMakerSeniorDSRole"
+junior_ds_role_arn = "arn:aws:iam::123456789012:role/SageMakerJuniorDSRole"
+ml_engineer_role_arn = "arn:aws:iam::123456789012:role/SageMakerMLEngineerRole"
+data_analyst_role_arn = "arn:aws:iam::123456789012:role/SageMakerDataAnalystRole"
+pipeline_execution_role_arn = "arn:aws:iam::123456789012:role/SageMakerPipelineRole"
+
+# Storage Configuration
+shared_s3_path = "s3://your-sagemaker-bucket/shared-outputs"
+input_data_s3_uri = "s3://your-data-bucket/input-data/"
+output_data_s3_path = "s3://your-sagemaker-bucket/pipeline-outputs/"
+
+# Optional: KMS encryption
+# kms_key_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+
+# Environment Configuration
+environment = "dev"
+cost_center = "data-science-team"
+owner = "data-science-manager@company.com"
+
+# Optional: Create execution role if you don't have existing ones
+create_execution_role = false
