@@ -27,7 +27,6 @@
 #   description = "Security Group ID created for SageMaker Studio"
 #   value       = module.sagemaker_studio_multi_user.security_group_id
 # }
-
 # output "execution_role_arn" {
 #   description = "Execution role ARN (if created)"
 #   value       = module.sagemaker_studio_multi_user.execution_role_arn
