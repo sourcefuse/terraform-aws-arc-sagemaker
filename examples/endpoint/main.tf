@@ -32,12 +32,9 @@ module "sagemaker_model" {
   source = "../.."
 
   name                   = "terraform-arc"
-  create_domain          = false
   create_endpoint_config = true
   create_model           = true
-  create_pipeline        = false
-  create_user_profile    = false
-  create_security_groups = false
+
 
   primary_container = {
     image          = "683313688378.dkr.ecr.us-east-1.amazonaws.com/sagemaker-scikit-learn:1.0-1-cpu-py3"

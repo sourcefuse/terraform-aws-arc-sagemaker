@@ -25,11 +25,6 @@ variable "vpc_name" {
   default     = "arc-poc-vpc"
 }
 
-variable "execution_role_arn" {
-  description = "ARN of the IAM role for SageMaker execution"
-  type        = string
-}
-
 variable "s3_output_path" {
   description = "S3 path for notebook outputs"
   type        = string

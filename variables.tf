@@ -314,6 +314,7 @@ variable "default_user_settings" {
   description = "The default user settings for the domain"
   type = object({
     execution_role_arn  = string
+    pipeline_role_arn   = optional(string)
     auto_mount_home_efs = optional(string, "Enabled")
     default_landing_uri = optional(string)
     studio_web_portal   = optional(string, "ENABLED")
@@ -903,7 +904,7 @@ variable "additional_iam_policies" {
 variable "create_security_groups" {
   description = "Whether to create security groups for SageMaker Studio"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "additional_security_group_ids" {
@@ -951,19 +952,19 @@ variable "security_group_egress_rules" {
 variable "create_user_profile" {
   description = "Whether to create the SageMaker user profile"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "create_pipeline" {
   description = "Whether to create the SageMaker pipeline"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "create_domain" {
   description = "Whether to create the SageMaker domain"
   type        = bool
-  default     = true
+  default     = false
 }
 variable "create_model" {
   description = "Whether to create the SageMaker model"

@@ -1,7 +1,7 @@
 
 # This Terraform configuration creates the following AWS services:
 # SageMaker Domain
-# ageMaker User Profile
+# sageMaker User Profile
 # sagemaker_pipeline
 terraform {
   required_version = ">= 1.5.0"
@@ -32,16 +32,20 @@ module "sagemaker_studio_basic" {
   source = "../../"
 
   # Domain Configuration
-  domain_name = "basic-ml-domain"
-  auth_mode   = "IAM"
+  create_domain       = true
+  create_pipeline     = true
+  create_user_profile = true
+  domain_name         = "basic-ml-domain"
+  auth_mode           = "IAM"
 
   # Network Configuration
-  vpc_id     = data.aws_vpc.default.id
-  subnet_ids = [data.aws_subnets.private.ids[0]]
+  vpc_id                 = data.aws_vpc.default.id
+  subnet_ids             = [data.aws_subnets.private.ids[0]]
+  create_security_groups = true
 
   # Default User Settings
   default_user_settings = {
-    execution_role_arn = var.execution_role_arn
+    execution_role_arn = aws_iam_role.sagemaker_execution_role.arn
 
     # Basic JupyterLab configuration
     jupyter_lab_app_settings = {
@@ -68,9 +72,9 @@ module "sagemaker_studio_basic" {
   user_profiles = [
     {
       name               = "data-scientist"
-      execution_role_arn = var.execution_role_arn
+      execution_role_arn = aws_iam_role.sagemaker_execution_role.arn
       user_settings = {
-        execution_role_arn = var.execution_role_arn
+        execution_role_arn = aws_iam_role.sagemaker_execution_role.arn
         jupyter_lab_app_settings = {
           default_resource_spec = {
             instance_type = "ml.t3.medium"
@@ -97,7 +101,6 @@ module "sagemaker_studio_basic" {
                 TrainingImage     = "382416733822.dkr.ecr.us-east-1.amazonaws.com/xgboost:latest"
                 TrainingInputMode = "File"
               }
-              RoleArn = var.execution_role_arn
               InputDataConfig = [
                 {
                   ChannelName = "training"
@@ -131,6 +134,29 @@ module "sagemaker_studio_basic" {
   # Create IAM role
   create_execution_role = true
   execution_role_name   = "SageMakerBasicExecutionRole"
+  create_pipeline_role  = true
 
   tags = module.tags.tags
+}
+
+################## iam ####################
+
+resource "aws_iam_role" "sagemaker_execution_role" {
+  name = "multi-sagemaker-execution-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = {
+        Service = "sagemaker.amazonaws.com"
+      }
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "attach_policy" {
+  role       = aws_iam_role.sagemaker_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSageMakerFullAccess"
 }

@@ -1162,7 +1162,7 @@ resource "aws_sagemaker_pipeline" "this" {
   pipeline_name         = each.value.name
   pipeline_display_name = each.value.display_name
   pipeline_description  = each.value.description
-  role_arn              = each.value.role_arn != null ? each.value.role_arn : (var.create_execution_role ? aws_iam_role.execution_role[0].arn : var.default_user_settings.execution_role_arn)
+  role_arn              = each.value.role_arn != null ? each.value.role_arn : (var.create_pipeline_role ? aws_iam_role.pipeline_role[0].arn : var.default_user_settings.pipeline_role_arn)
 
   # Pipeline Definition (either inline JSON or S3 location)
   pipeline_definition = each.value.definition

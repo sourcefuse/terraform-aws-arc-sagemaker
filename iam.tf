@@ -1,4 +1,3 @@
-
 resource "aws_iam_role" "sagemaker_execution_role" {
   name = "${var.name}-sagemaker-execution-role"
 
@@ -216,6 +215,7 @@ resource "aws_iam_role_policy" "pipeline_role_custom" {
 }
 
 # Security Group for SageMaker Studio
+
 resource "aws_security_group" "sagemaker" {
   count = var.create_security_groups ? 1 : 0
 

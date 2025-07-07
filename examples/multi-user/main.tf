@@ -32,6 +32,10 @@ module "sagemaker_studio_multi_user" {
   source = "../../"
 
   # Domain Configuration
+
+  create_domain                 = true
+  create_pipeline               = true
+  create_user_profile           = true
   domain_name                   = "multi-user-ml-domain"
   auth_mode                     = "IAM"
   app_network_access_type       = "VpcOnly"
@@ -44,7 +48,7 @@ module "sagemaker_studio_multi_user" {
 
   # Default User Settings - Balanced configuration
   default_user_settings = {
-    execution_role_arn = var.execution_role_arn
+    execution_role_arn = aws_iam_role.sagemaker_execution_role.arn
 
     # Standard JupyterLab Settings
     jupyter_lab_app_settings = {
@@ -105,7 +109,7 @@ module "sagemaker_studio_multi_user" {
     # Data Science Team Lead
     {
       name               = "ds-team-lead"
-      execution_role_arn = var.team_lead_role_arn
+      execution_role_arn = aws_iam_role.sagemaker_execution_role.arn
 
       user_settings = {
         jupyter_lab_app_settings = {
@@ -125,7 +129,7 @@ module "sagemaker_studio_multi_user" {
     # Senior Data Scientist
     {
       name               = "senior-data-scientist"
-      execution_role_arn = var.senior_ds_role_arn
+      execution_role_arn = aws_iam_role.sagemaker_execution_role.arn
 
       user_settings = {
         jupyter_lab_app_settings = {
@@ -145,7 +149,7 @@ module "sagemaker_studio_multi_user" {
     # Junior Data Scientist
     {
       name               = "junior-data-scientist"
-      execution_role_arn = var.junior_ds_role_arn
+      execution_role_arn = aws_iam_role.sagemaker_execution_role.arn
 
       user_settings = {
         jupyter_lab_app_settings = {
@@ -169,7 +173,7 @@ module "sagemaker_studio_multi_user" {
     # ML Engineer
     {
       name               = "ml-engineer"
-      execution_role_arn = var.ml_engineer_role_arn
+      execution_role_arn = aws_iam_role.sagemaker_execution_role.arn
 
       user_settings = {
         jupyter_lab_app_settings = {
@@ -195,7 +199,7 @@ module "sagemaker_studio_multi_user" {
     # Data Analyst
     {
       name               = "data-analyst"
-      execution_role_arn = var.data_analyst_role_arn
+      execution_role_arn = aws_iam_role.sagemaker_execution_role.arn
 
       user_settings = {
         jupyter_lab_app_settings = {
@@ -254,7 +258,6 @@ module "sagemaker_studio_multi_user" {
               AppSpecification = {
                 ImageUri = "382416733822.dkr.ecr.us-east-1.amazonaws.com/sagemaker-scikit-learn:0.23-1-cpu-py3"
               }
-              RoleArn = var.pipeline_execution_role_arn
             }
           }
         ]
@@ -269,6 +272,7 @@ module "sagemaker_studio_multi_user" {
   # IAM Configuration
   create_execution_role = var.create_execution_role
   execution_role_name   = "SageMakerMultiUserExecutionRole"
+  create_pipeline_role  = true
 
   additional_iam_policies = [
     "arn:aws:iam::aws:policy/AmazonS3FullAccess"
@@ -276,4 +280,26 @@ module "sagemaker_studio_multi_user" {
 
   # Tags for cost tracking and management
   tags = module.tags.tags
+}
+
+################## iam ####################
+
+resource "aws_iam_role" "sagemaker_execution_role" {
+  name = "multi-sagemaker-execution-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = {
+        Service = "sagemaker.amazonaws.com"
+      }
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "attach_policy" {
+  role       = aws_iam_role.sagemaker_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSageMakerFullAccess"
 }
