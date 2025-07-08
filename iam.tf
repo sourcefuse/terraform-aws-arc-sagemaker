@@ -117,7 +117,7 @@ resource "aws_iam_role_policy" "execution_role_custom" {
           "kms:GenerateDataKey",
           "kms:DescribeKey"
         ]
-        Resource = "*"
+        Resource = aws_iam_role.execution_role[0].arn
       },
       {
         Effect = "Allow"
@@ -208,7 +208,7 @@ resource "aws_iam_role_policy" "pipeline_role_custom" {
           "events:DescribeRule",
           "lambda:InvokeFunction"
         ]
-        Resource = "*"
+        Resource = aws_iam_role.pipeline_role[0].arn
       }
     ]
   })

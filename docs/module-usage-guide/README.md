@@ -8,7 +8,7 @@ This document provides guidelines and instructions for users looking to implemen
 
 ### Module Overview
 
- Terraform module for managing A comprehensive Terraform module for creating and managing AWS SageMaker Studio domains, user profiles, model, endpoint, endpoint configuration and ML pipelines with all advanced features and best practices..
+ Terraform module for managing A comprehensive Terraform module for creating and managing AWS SageMaker Studio domains, user profiles, model, endpoint, endpoint configuration and ML pipelines with all advanced features and best practices.
 
 ### Prerequisites
 
