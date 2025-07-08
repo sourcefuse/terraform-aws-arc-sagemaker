@@ -214,110 +214,18 @@ resource "aws_iam_role_policy" "pipeline_role_custom" {
   })
 }
 
-# Security Group for SageMaker Studio
+###################################################################
+#                Security Group
+###################################################################
+module "arc_security_group" {
+  source  = "sourcefuse/arc-security-group/aws"
+  version = "0.0.1"
 
-resource "aws_security_group" "sagemaker" {
-  count = var.create_security_groups ? 1 : 0
+  count         = var.create_security_groups ? 1 : 0
+  name          = var.security_group_name
+  vpc_id        = var.vpc_id
+  ingress_rules = var.security_group_data.ingress_rules
+  egress_rules  = var.security_group_data.egress_rules
 
-  name_prefix = "${var.domain_name}-sagemaker-"
-  description = "Security group for SageMaker Studio Domain ${var.domain_name}"
-  vpc_id      = var.vpc_id
-
-  # Ingress rules
-  dynamic "ingress" {
-    for_each = var.security_group_ingress_rules
-    content {
-      description      = ingress.value.description
-      from_port        = ingress.value.from_port
-      to_port          = ingress.value.to_port
-      protocol         = ingress.value.protocol
-      cidr_blocks      = ingress.value.cidr_blocks
-      ipv6_cidr_blocks = ingress.value.ipv6_cidr_blocks
-      security_groups  = ingress.value.security_groups
-      self             = ingress.value.self
-    }
-  }
-
-  # Default ingress rule for HTTPS
-  ingress {
-    description = "HTTPS"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # Default ingress rule for NFS (if using EFS)
-  ingress {
-    description = "NFS for EFS"
-    from_port   = 2049
-    to_port     = 2049
-    protocol    = "tcp"
-    self        = true
-  }
-
-  # Egress rules
-  dynamic "egress" {
-    for_each = var.security_group_egress_rules
-    content {
-      description      = egress.value.description
-      from_port        = egress.value.from_port
-      to_port          = egress.value.to_port
-      protocol         = egress.value.protocol
-      cidr_blocks      = egress.value.cidr_blocks
-      ipv6_cidr_blocks = egress.value.ipv6_cidr_blocks
-      security_groups  = egress.value.security_groups
-      self             = egress.value.self
-    }
-  }
-
-  # Default egress rule
-  egress {
-    description = "All outbound traffic"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = merge(var.tags, {
-    Name = "${var.domain_name}-sagemaker-sg"
-  })
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
-# Security Group for EFS (if using custom file system)
-resource "aws_security_group" "efs" {
-  count = var.create_security_groups && var.create_efs_security_group ? 1 : 0
-
-  name_prefix = "${var.domain_name}-efs-"
-  description = "Security group for EFS used by SageMaker Studio Domain ${var.domain_name}"
-  vpc_id      = var.vpc_id
-
-  ingress {
-    description     = "NFS from SageMaker"
-    from_port       = 2049
-    to_port         = 2049
-    protocol        = "tcp"
-    security_groups = [aws_security_group.sagemaker[0].id]
-  }
-
-  egress {
-    description = "All outbound traffic"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = merge(var.tags, {
-    Name = "${var.domain_name}-efs-sg"
-  })
-
-  lifecycle {
-    create_before_destroy = true
-  }
+  tags = var.tags
 }

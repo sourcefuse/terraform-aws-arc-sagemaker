@@ -333,7 +333,7 @@ resource "aws_sagemaker_domain" "this" {
 
   default_user_settings {
     execution_role      = aws_iam_role.execution_role[0].arn
-    security_groups     = concat(var.create_security_groups ? [aws_security_group.sagemaker[0].id] : [], var.additional_security_group_ids)
+    security_groups     = concat(var.create_security_groups ? [for sg in module.arc_security_group : sg.id] : [], var.additional_security_group_ids)
     auto_mount_home_efs = var.default_user_settings.auto_mount_home_efs
     default_landing_uri = var.default_user_settings.default_landing_uri
     studio_web_portal   = var.default_user_settings.studio_web_portal
@@ -820,7 +820,7 @@ resource "aws_sagemaker_user_profile" "this" {
 
   user_settings {
     execution_role      = each.value.execution_role_arn != null ? each.value.execution_role_arn : var.default_user_settings.execution_role_arn
-    security_groups     = each.value.user_settings != null && each.value.user_settings.security_groups != null ? each.value.user_settings.security_groups : concat(var.create_security_groups ? [aws_security_group.sagemaker[0].id] : [], var.additional_security_group_ids)
+    security_groups     = each.value.user_settings != null && each.value.user_settings.security_groups != null ? each.value.user_settings.security_groups : concat(var.create_security_groups ? [for sg in module.arc_security_group : sg.id] : [], var.additional_security_group_ids)
     auto_mount_home_efs = each.value.user_settings != null && each.value.user_settings.auto_mount_home_efs != null ? each.value.user_settings.auto_mount_home_efs : var.default_user_settings.auto_mount_home_efs
     default_landing_uri = each.value.user_settings != null && each.value.user_settings.default_landing_uri != null ? each.value.user_settings.default_landing_uri : var.default_user_settings.default_landing_uri
     studio_web_portal   = each.value.user_settings != null && each.value.user_settings.studio_web_portal != null ? each.value.user_settings.studio_web_portal : var.default_user_settings.studio_web_portal

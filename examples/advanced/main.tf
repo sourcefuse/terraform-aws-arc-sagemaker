@@ -41,6 +41,8 @@ module "sagemaker_studio_basic" {
   # Network Configuration
   vpc_id                 = data.aws_vpc.default.id
   subnet_ids             = [data.aws_subnets.private.ids[0]]
+  security_group_data    = var.security_group_data
+  security_group_name    = var.security_group_name
   create_security_groups = true
 
   # Default User Settings

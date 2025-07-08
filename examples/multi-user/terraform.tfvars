@@ -3,14 +3,36 @@ region      = "us-east-1"
 environment = "develop"
 namespace   = "arc"
 
-# IAM Roles - Using placeholder ARNs (will be created by the module)
-# execution_role_arn          = "arn:aws:iam::884360309640:role/test-sagem"
-# team_lead_role_arn          = "arn:aws:iam::884360309640:role/SageMakerTeamLeadRole"
-# senior_ds_role_arn          = "arn:aws:iam::884360309640:role/SageMakerSeniorDSRole"
-# junior_ds_role_arn          = "arn:aws:iam::884360309640:role/SageMakerJuniorDSRole"
-# ml_engineer_role_arn        = "arn:aws:iam::884360309640:role/SageMakerMLEngineerRole"
-# data_analyst_role_arn       = "arn:aws:iam::884360309640:role/SageMakerDataAnalystRole"
-# pipeline_execution_role_arn = "arn:aws:iam::884360309640:role/SageMakerPipelineRole"
+security_group_name = "arc-sagemaker-sg"
+security_group_data = {
+  create      = true
+  description = "Security Group for sagemaker"
+  ingress_rules = [
+    {
+      description = "Allow VPC traffic"
+      cidr_block  = "0.0.0.0/0"
+      from_port   = 0
+      ip_protocol = "tcp"
+      to_port     = 443
+    },
+    {
+      description = "Allow traffic from self"
+      self        = true
+      from_port   = 80
+      ip_protocol = "tcp"
+      to_port     = 80
+    },
+  ]
+  egress_rules = [
+    {
+      description = "Allow all outbound traffic"
+      cidr_block  = "0.0.0.0/0"
+      from_port   = -1
+      ip_protocol = "-1"
+      to_port     = -1
+    }
+  ]
+}
 
 # Storage Configuration - Using existing SageMaker bucket
 shared_s3_path      = "s3://amazon-sagemaker-884360309640-us-east-1-975720f49e0b/shared-outputs"

@@ -913,40 +913,39 @@ variable "additional_security_group_ids" {
   default     = []
 }
 
-variable "create_efs_security_group" {
-  description = "Whether to create a security group for EFS"
-  type        = bool
-  default     = false
+variable "security_group_data" {
+  type = object({
+    security_group_ids_to_attach = optional(list(string), [])
+    create                       = optional(bool, true)
+    description                  = optional(string, null)
+    ingress_rules = optional(list(object({
+      description              = optional(string, null)
+      cidr_block               = optional(string, null)
+      source_security_group_id = optional(string, null)
+      from_port                = number
+      ip_protocol              = string
+      to_port                  = string
+      self                     = optional(bool, false)
+    })), [])
+    egress_rules = optional(list(object({
+      description                   = optional(string, null)
+      cidr_block                    = optional(string, null)
+      destination_security_group_id = optional(string, null)
+      from_port                     = number
+      ip_protocol                   = string
+      to_port                       = string
+      prefix_list_id                = optional(string, null)
+    })), [])
+  })
+  description = "(optional) Security Group data"
+  default = {
+    create = false
+  }
 }
-
-variable "security_group_ingress_rules" {
-  description = "List of ingress rules for the SageMaker security group"
-  type = list(object({
-    description      = optional(string)
-    from_port        = number
-    to_port          = number
-    protocol         = string
-    cidr_blocks      = optional(list(string))
-    ipv6_cidr_blocks = optional(list(string))
-    security_groups  = optional(list(string))
-    self             = optional(bool)
-  }))
-  default = []
-}
-
-variable "security_group_egress_rules" {
-  description = "List of egress rules for the SageMaker security group"
-  type = list(object({
-    description      = optional(string)
-    from_port        = number
-    to_port          = number
-    protocol         = string
-    cidr_blocks      = optional(list(string))
-    ipv6_cidr_blocks = optional(list(string))
-    security_groups  = optional(list(string))
-    self             = optional(bool)
-  }))
-  default = []
+variable "security_group_name" {
+  type        = string
+  description = "sagemaker security group name"
+  default     = "sagemaker-sg"
 }
 
 variable "create_user_profile" {
