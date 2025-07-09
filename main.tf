@@ -804,15 +804,15 @@ resource "aws_sagemaker_user_profile" "this" {
   single_sign_on_user_value      = each.value.single_sign_on_user_value
 
   user_settings {
-    execution_role      = each.value.execution_role_arn != null ? each.value.execution_role_arn : var.default_user_settings.execution_role_arn
+    execution_role      = aws_iam_role.execution_role[0].arn
     security_groups     = each.value.user_settings != null && each.value.user_settings.security_groups != null ? each.value.user_settings.security_groups : concat(var.create_security_groups ? [for sg in module.arc_security_group : sg.id] : [], var.additional_security_group_ids)
-    auto_mount_home_efs = each.value.user_settings != null && each.value.user_settings.auto_mount_home_efs != null ? each.value.user_settings.auto_mount_home_efs : var.default_user_settings.auto_mount_home_efs
-    default_landing_uri = each.value.user_settings != null && each.value.user_settings.default_landing_uri != null ? each.value.user_settings.default_landing_uri : var.default_user_settings.default_landing_uri
-    studio_web_portal   = each.value.user_settings != null && each.value.user_settings.studio_web_portal != null ? each.value.user_settings.studio_web_portal : var.default_user_settings.studio_web_portal
+    auto_mount_home_efs = try(each.value.user_settings.auto_mount_home_efs, null)
+    default_landing_uri = try(each.value.user_settings.default_landing_uri, null)
+    studio_web_portal   = try(each.value.user_settings.studio_web_portal, null)
 
     # JupyterLab App Settings for User Profile
     dynamic "jupyter_lab_app_settings" {
-      for_each = each.value.user_settings != null && each.value.user_settings.jupyter_lab_app_settings != null ? [each.value.user_settings.jupyter_lab_app_settings] : (var.default_user_settings.jupyter_lab_app_settings != null ? [var.default_user_settings.jupyter_lab_app_settings] : [])
+      for_each = each.value.user_settings != null && each.value.user_settings.jupyter_lab_app_settings != null ? [each.value.user_settings.jupyter_lab_app_settings] : []
       content {
         dynamic "default_resource_spec" {
           for_each = jupyter_lab_app_settings.value.default_resource_spec != null ? [jupyter_lab_app_settings.value.default_resource_spec] : []
@@ -871,7 +871,7 @@ resource "aws_sagemaker_user_profile" "this" {
 
     # Code Editor App Settings for User Profile
     dynamic "code_editor_app_settings" {
-      for_each = each.value.user_settings != null && each.value.user_settings.code_editor_app_settings != null ? [each.value.user_settings.code_editor_app_settings] : (var.default_user_settings.code_editor_app_settings != null ? [var.default_user_settings.code_editor_app_settings] : [])
+      for_each = each.value.user_settings != null && each.value.user_settings.code_editor_app_settings != null ? [each.value.user_settings.code_editor_app_settings] : []
       content {
         dynamic "default_resource_spec" {
           for_each = code_editor_app_settings.value.default_resource_spec != null ? [code_editor_app_settings.value.default_resource_spec] : []
@@ -915,7 +915,7 @@ resource "aws_sagemaker_user_profile" "this" {
 
     # Canvas App Settings for User Profile
     dynamic "canvas_app_settings" {
-      for_each = each.value.user_settings != null && each.value.user_settings.canvas_app_settings != null ? [each.value.user_settings.canvas_app_settings] : (var.default_user_settings.canvas_app_settings != null ? [var.default_user_settings.canvas_app_settings] : [])
+      for_each = each.value.user_settings != null && each.value.user_settings.canvas_app_settings != null ? [each.value.user_settings.canvas_app_settings] : []
       content {
         dynamic "time_series_forecasting_settings" {
           for_each = canvas_app_settings.value.time_series_forecasting_settings != null ? [canvas_app_settings.value.time_series_forecasting_settings] : []
@@ -976,7 +976,7 @@ resource "aws_sagemaker_user_profile" "this" {
 
     # Additional app settings (Jupyter Server, Kernel Gateway, TensorBoard, R Session, RStudio Server Pro)
     dynamic "jupyter_server_app_settings" {
-      for_each = each.value.user_settings != null && each.value.user_settings.jupyter_server_app_settings != null ? [each.value.user_settings.jupyter_server_app_settings] : (var.default_user_settings.jupyter_server_app_settings != null ? [var.default_user_settings.jupyter_server_app_settings] : [])
+      for_each = each.value.user_settings != null && each.value.user_settings.jupyter_server_app_settings != null ? [each.value.user_settings.jupyter_server_app_settings] : []
       content {
         dynamic "default_resource_spec" {
           for_each = jupyter_server_app_settings.value.default_resource_spec != null ? [jupyter_server_app_settings.value.default_resource_spec] : []
@@ -1001,7 +1001,7 @@ resource "aws_sagemaker_user_profile" "this" {
     }
 
     dynamic "kernel_gateway_app_settings" {
-      for_each = each.value.user_settings != null && each.value.user_settings.kernel_gateway_app_settings != null ? [each.value.user_settings.kernel_gateway_app_settings] : (var.default_user_settings.kernel_gateway_app_settings != null ? [var.default_user_settings.kernel_gateway_app_settings] : [])
+      for_each = each.value.user_settings != null && each.value.user_settings.kernel_gateway_app_settings != null ? [each.value.user_settings.kernel_gateway_app_settings] : []
       content {
         dynamic "default_resource_spec" {
           for_each = kernel_gateway_app_settings.value.default_resource_spec != null ? [kernel_gateway_app_settings.value.default_resource_spec] : []
@@ -1028,7 +1028,7 @@ resource "aws_sagemaker_user_profile" "this" {
     }
 
     dynamic "tensor_board_app_settings" {
-      for_each = each.value.user_settings != null && each.value.user_settings.tensor_board_app_settings != null ? [each.value.user_settings.tensor_board_app_settings] : (var.default_user_settings.tensor_board_app_settings != null ? [var.default_user_settings.tensor_board_app_settings] : [])
+      for_each = each.value.user_settings != null && each.value.user_settings.tensor_board_app_settings != null ? [each.value.user_settings.tensor_board_app_settings] : []
       content {
         dynamic "default_resource_spec" {
           for_each = tensor_board_app_settings.value.default_resource_spec != null ? [tensor_board_app_settings.value.default_resource_spec] : []
@@ -1044,7 +1044,7 @@ resource "aws_sagemaker_user_profile" "this" {
     }
 
     dynamic "r_session_app_settings" {
-      for_each = each.value.user_settings != null && each.value.user_settings.r_session_app_settings != null ? [each.value.user_settings.r_session_app_settings] : (var.default_user_settings.r_session_app_settings != null ? [var.default_user_settings.r_session_app_settings] : [])
+      for_each = each.value.user_settings != null && each.value.user_settings.r_session_app_settings != null ? [each.value.user_settings.r_session_app_settings] : []
       content {
         dynamic "default_resource_spec" {
           for_each = r_session_app_settings.value.default_resource_spec != null ? [r_session_app_settings.value.default_resource_spec] : []
@@ -1069,7 +1069,7 @@ resource "aws_sagemaker_user_profile" "this" {
     }
 
     dynamic "r_studio_server_pro_app_settings" {
-      for_each = each.value.user_settings != null && each.value.user_settings.r_studio_server_pro_app_settings != null ? [each.value.user_settings.r_studio_server_pro_app_settings] : (var.default_user_settings.r_studio_server_pro_app_settings != null ? [var.default_user_settings.r_studio_server_pro_app_settings] : [])
+      for_each = each.value.user_settings != null && each.value.user_settings.r_studio_server_pro_app_settings != null ? [each.value.user_settings.r_studio_server_pro_app_settings] : []
       content {
         access_status = r_studio_server_pro_app_settings.value.access_status
         user_group    = r_studio_server_pro_app_settings.value.user_group
@@ -1078,7 +1078,7 @@ resource "aws_sagemaker_user_profile" "this" {
 
     # Sharing Settings for User Profile
     dynamic "sharing_settings" {
-      for_each = each.value.user_settings != null && each.value.user_settings.sharing_settings != null ? [each.value.user_settings.sharing_settings] : (var.default_user_settings.sharing_settings != null ? [var.default_user_settings.sharing_settings] : [])
+      for_each = each.value.user_settings != null && each.value.user_settings.sharing_settings != null ? [each.value.user_settings.sharing_settings] : []
       content {
         notebook_output_option = sharing_settings.value.notebook_output_option
         s3_kms_key_id          = sharing_settings.value.s3_kms_key_id
@@ -1088,7 +1088,7 @@ resource "aws_sagemaker_user_profile" "this" {
 
     # Space Storage Settings for User Profile
     dynamic "space_storage_settings" {
-      for_each = each.value.user_settings != null && each.value.user_settings.space_storage_settings != null ? [each.value.user_settings.space_storage_settings] : (var.default_user_settings.space_storage_settings != null ? [var.default_user_settings.space_storage_settings] : [])
+      for_each = each.value.user_settings != null && each.value.user_settings.space_storage_settings != null ? [each.value.user_settings.space_storage_settings] : []
       content {
         dynamic "default_ebs_storage_settings" {
           for_each = space_storage_settings.value.default_ebs_storage_settings != null ? [space_storage_settings.value.default_ebs_storage_settings] : []
@@ -1102,7 +1102,7 @@ resource "aws_sagemaker_user_profile" "this" {
 
     # Custom File System Config for User Profile
     dynamic "custom_file_system_config" {
-      for_each = each.value.user_settings != null && each.value.user_settings.custom_file_system_config != null ? [each.value.user_settings.custom_file_system_config] : (var.default_user_settings.custom_file_system_config != null ? [var.default_user_settings.custom_file_system_config] : [])
+      for_each = each.value.user_settings != null && each.value.user_settings.custom_file_system_config != null ? [each.value.user_settings.custom_file_system_config] : []
       content {
         dynamic "efs_file_system_config" {
           for_each = custom_file_system_config.value.efs_file_system_config != null ? [custom_file_system_config.value.efs_file_system_config] : []
@@ -1116,7 +1116,7 @@ resource "aws_sagemaker_user_profile" "this" {
 
     # Custom POSIX User Config for User Profile
     dynamic "custom_posix_user_config" {
-      for_each = each.value.user_settings != null && each.value.user_settings.custom_posix_user_config != null ? [each.value.user_settings.custom_posix_user_config] : (var.default_user_settings.custom_posix_user_config != null ? [var.default_user_settings.custom_posix_user_config] : [])
+      for_each = each.value.user_settings != null && each.value.user_settings.custom_posix_user_config != null ? [each.value.user_settings.custom_posix_user_config] : []
       content {
         gid = custom_posix_user_config.value.gid
         uid = custom_posix_user_config.value.uid
@@ -1125,7 +1125,7 @@ resource "aws_sagemaker_user_profile" "this" {
 
     # Studio Web Portal Settings for User Profile
     dynamic "studio_web_portal_settings" {
-      for_each = each.value.user_settings != null && each.value.user_settings.studio_web_portal_settings != null ? [each.value.user_settings.studio_web_portal_settings] : (var.default_user_settings.studio_web_portal_settings != null ? [var.default_user_settings.studio_web_portal_settings] : [])
+      for_each = each.value.user_settings != null && each.value.user_settings.studio_web_portal_settings != null ? [each.value.user_settings.studio_web_portal_settings] : []
       content {
         hidden_app_types      = studio_web_portal_settings.value.hidden_app_types
         hidden_instance_types = studio_web_portal_settings.value.hidden_instance_types
@@ -1147,8 +1147,7 @@ resource "aws_sagemaker_pipeline" "this" {
   pipeline_name         = each.value.name
   pipeline_display_name = each.value.display_name
   pipeline_description  = each.value.description
-  role_arn              = each.value.role_arn != null ? each.value.role_arn : (var.create_pipeline_role ? aws_iam_role.pipeline_role[0].arn : var.default_user_settings.pipeline_role_arn)
-
+  role_arn              = each.value.role_arn != null ? each.value.role_arn : aws_iam_role.pipeline_role[0].arn
   # Pipeline Definition (either inline JSON or S3 location)
   pipeline_definition = each.value.definition
 

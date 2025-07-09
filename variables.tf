@@ -237,8 +237,7 @@ variable "deployment_config" {
   default = null
 }
 
-#########################################################################################################################################################
-
+#################################################################################
 # Domain Configuration Variables
 variable "domain_name" {
   description = "The name of the SageMaker domain"
@@ -309,8 +308,7 @@ variable "default_user_settings" {
   description = "The default user settings for the domain"
   type = object({
     execution_role_arn  = string
-    pipeline_role_arn   = optional(string)
-    auto_mount_home_efs = optional(string, "Enabled")
+    auto_mount_home_efs = optional(string, "Disabled")
     default_landing_uri = optional(string)
     studio_web_portal   = optional(string, "ENABLED")
 
@@ -616,12 +614,12 @@ variable "user_profiles" {
   description = "List of user profiles to create"
   type = list(object({
     name                           = string
-    execution_role_arn             = optional(string)
     single_sign_on_user_identifier = optional(string)
     single_sign_on_user_value      = optional(string)
     tags                           = optional(map(string))
 
     user_settings = optional(object({
+      execution_role_arn  = optional(string)
       auto_mount_home_efs = optional(string)
       default_landing_uri = optional(string)
       studio_web_portal   = optional(string)
