@@ -1,4 +1,5 @@
-# AWS SageMaker AI Terraform Module
+![Module Structure](./static/sagemaker-banner.png)
+# AWS SageMaker Terraform Module
 # [terraform-aws-arc-sagemaker](https://github.com/sourcefuse/terraform-aws-arc-sagemaker)
 
 <a href="https://github.com/sourcefuse/terraform-aws-arc-sagemaker/releases/latest"><img src="https://img.shields.io/github/release/sourcefuse/terraform-aws-arc-sagemaker.svg?style=for-the-badge" alt="Latest Release"/></a> <a href="https://github.com/sourcefuse/terraform-aws-arc-sagemaker/commits"><img src="https://img.shields.io/github/last-commit/sourcefuse/terraform-aws-arc-sagemaker.svg?style=for-the-badge" alt="Last Updated"/></a> ![Terraform](https://img.shields.io/badge/terraform-%235835CC.svg?style=for-the-badge&logo=terraform&logoColor=white) ![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
