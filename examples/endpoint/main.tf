@@ -20,7 +20,7 @@ module "tags" {
   source  = "sourcefuse/arc-tags/aws"
   version = "1.2.6"
 
-  environment = terraform.workspace
+  environment = var.environment
   project     = "terraform-aws-arc-sagemaker"
 
   extra_tags = {

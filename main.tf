@@ -12,21 +12,6 @@ terraform {
   }
 }
 
-provider "aws" {
-  region = "us-east-1"
-}
-
-module "tags" {
-  source  = "sourcefuse/arc-tags/aws"
-  version = "1.2.6"
-
-  environment = terraform.workspace
-  project     = "terraform-aws-arc-alb"
-
-  extra_tags = {
-    Example = "True"
-  }
-}
 ###################################################################################
 # sagemaker model
 ###################################################################################
@@ -809,7 +794,7 @@ resource "aws_sagemaker_domain" "this" {
 # SageMaker User Profiles
 ################################################################################################
 resource "aws_sagemaker_user_profile" "this" {
-  for_each = var.create_user_profile ? {
+  for_each = var.create_user_profile && var.create_domain ? {
     for profile in var.user_profiles : profile.name => profile
   } : {}
 

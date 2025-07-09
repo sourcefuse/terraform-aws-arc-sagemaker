@@ -1,18 +1,3 @@
-output "model_arn" {
-  value       = var.create_model ? aws_sagemaker_model.this[0].arn : null
-  description = "The ARN of the created SageMaker model"
-}
-
-output "model_name" {
-  value       = var.create_model ? aws_sagemaker_model.this[0].name : null
-  description = "The name of the created SageMaker model"
-}
-
-output "arn" {
-  description = "The ARN assigned by AWS to this endpoint configuration."
-  value       = var.create_endpoint_config ? aws_sagemaker_endpoint_configuration.this[0].arn : null
-}
-
 output "sagemaker_domain_id" {
   description = "ID of the SageMaker domain"
   value       = length(aws_sagemaker_domain.this) > 0 ? aws_sagemaker_domain.this[0].id : null

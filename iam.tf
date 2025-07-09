@@ -43,30 +43,17 @@ resource "aws_iam_role" "execution_role" {
 }
 
 # Attach AWS managed policies to the execution role
-resource "aws_iam_role_policy_attachment" "execution_role_sagemaker_full_access" {
-  count = var.create_execution_role ? 1 : 0
-
-  role       = aws_iam_role.execution_role[0].name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonSageMakerFullAccess"
+locals {
+  all_execution_role_policies = var.create_execution_role ? toset(
+    concat(
+      ["arn:aws:iam::aws:policy/AmazonSageMakerFullAccess"],
+      var.additional_iam_policies
+    )
+  ) : []
 }
 
-resource "aws_iam_role_policy_attachment" "execution_role_s3_full_access" {
-  count = var.create_execution_role && contains(var.additional_iam_policies, "arn:aws:iam::aws:policy/AmazonS3FullAccess") ? 1 : 0
-
-  role       = aws_iam_role.execution_role[0].name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
-}
-
-resource "aws_iam_role_policy_attachment" "execution_role_emr_full_access" {
-  count = var.create_execution_role && contains(var.additional_iam_policies, "arn:aws:iam::aws:policy/AmazonEMRFullAccessPolicy_v2") ? 1 : 0
-
-  role       = aws_iam_role.execution_role[0].name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEMRFullAccessPolicy_v2"
-}
-
-# Attach additional IAM policies
-resource "aws_iam_role_policy_attachment" "execution_role_additional" {
-  for_each = var.create_execution_role ? toset(var.additional_iam_policies) : []
+resource "aws_iam_role_policy_attachment" "execution_role_all_policies" {
+  for_each = local.all_execution_role_policies
 
   role       = aws_iam_role.execution_role[0].name
   policy_arn = each.value
@@ -119,28 +106,6 @@ resource "aws_iam_role_policy" "execution_role_custom" {
         ]
         Resource = aws_iam_role.execution_role[0].arn
       },
-      {
-        Effect = "Allow"
-        Action = [
-          "s3:GetObject",
-          "s3:PutObject",
-          "s3:DeleteObject"
-        ]
-        Resource = [
-          "arn:aws:s3:::sagemaker-*/*",
-          "arn:aws:s3:::*sagemaker*/*"
-        ]
-      },
-      {
-        Effect = "Allow"
-        Action = [
-          "s3:ListBucket"
-        ]
-        Resource = [
-          "arn:aws:s3:::sagemaker-*",
-          "arn:aws:s3:::*sagemaker*"
-        ]
-      }
     ]
   })
 }

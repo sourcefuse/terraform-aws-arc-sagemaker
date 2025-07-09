@@ -23,41 +23,6 @@ variable "vpc_name" {
   default     = "arc-poc-vpc"
 }
 
-# IAM Configuration
-# variable "execution_role_arn" {
-#   description = "Default execution role ARN for SageMaker Studio"
-#   type        = string
-# }
-
-# variable "team_lead_role_arn" {
-#   description = "IAM role ARN for team lead user profile"
-#   type        = string
-# }
-
-# variable "senior_ds_role_arn" {
-#   description = "IAM role ARN for senior data scientist user profile"
-#   type        = string
-# }
-
-# variable "junior_ds_role_arn" {
-#   description = "IAM role ARN for junior data scientist user profile"
-#   type        = string
-# }
-
-# variable "ml_engineer_role_arn" {
-#   description = "IAM role ARN for ML engineer user profile"
-#   type        = string
-# }
-
-# variable "data_analyst_role_arn" {
-#   description = "IAM role ARN for data analyst user profile"
-#   type        = string
-# }
-
-# variable "pipeline_execution_role_arn" {
-#   description = "IAM role ARN for pipeline execution"
-#   type        = string
-# }
 
 variable "create_execution_role" {
   description = "Whether to create a default execution role"

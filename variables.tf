@@ -135,8 +135,7 @@ variable "production_variants" {
   }))
   default = [
     {
-      variant_name = "AllTraffic"
-      #   model_name             = "default-model"
+      variant_name           = "AllTraffic"
       initial_instance_count = 1
       instance_type          = "ml.m5.large"
       initial_variant_weight = 1.0
@@ -197,10 +196,6 @@ variable "async_inference_config" {
 ##########################################
 ##########################################
 
-# variable "endpoint_config_name" {
-#   description = "The name of the endpoint configuration to use"
-#   type        = string
-# }
 
 variable "deployment_config" {
   description = "Deployment configuration block"

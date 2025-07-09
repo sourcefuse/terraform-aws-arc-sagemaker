@@ -61,7 +61,6 @@ module "sagemaker_model" {
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_arc_security_group"></a> [arc\_security\_group](#module\_arc\_security\_group) | sourcefuse/arc-security-group/aws | 0.0.1 |
-| <a name="module_tags"></a> [tags](#module\_tags) | sourcefuse/arc-tags/aws | 1.2.6 |
 
 ## Resources
 
@@ -73,10 +72,7 @@ module "sagemaker_model" {
 | [aws_iam_role_policy.execution_role_custom](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
 | [aws_iam_role_policy.pipeline_role_custom](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
 | [aws_iam_role_policy_attachment.attach_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
-| [aws_iam_role_policy_attachment.execution_role_additional](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
-| [aws_iam_role_policy_attachment.execution_role_emr_full_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
-| [aws_iam_role_policy_attachment.execution_role_s3_full_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
-| [aws_iam_role_policy_attachment.execution_role_sagemaker_full_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_iam_role_policy_attachment.execution_role_all_policies](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.pipeline_role_sagemaker_full_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_sagemaker_domain.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sagemaker_domain) | resource |
 | [aws_sagemaker_endpoint.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sagemaker_endpoint) | resource |
@@ -139,9 +135,6 @@ module "sagemaker_model" {
 
 | Name | Description |
 |------|-------------|
-| <a name="output_arn"></a> [arn](#output\_arn) | The ARN assigned by AWS to this endpoint configuration. |
-| <a name="output_model_arn"></a> [model\_arn](#output\_model\_arn) | The ARN of the created SageMaker model |
-| <a name="output_model_name"></a> [model\_name](#output\_model\_name) | The name of the created SageMaker model |
 | <a name="output_sagemaker_domain_arn"></a> [sagemaker\_domain\_arn](#output\_sagemaker\_domain\_arn) | ARN of the SageMaker domain |
 | <a name="output_sagemaker_domain_id"></a> [sagemaker\_domain\_id](#output\_sagemaker\_domain\_id) | ID of the SageMaker domain |
 | <a name="output_sagemaker_domain_url"></a> [sagemaker\_domain\_url](#output\_sagemaker\_domain\_url) | URL to access the SageMaker Studio |
