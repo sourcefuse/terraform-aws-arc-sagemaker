@@ -1,15 +1,30 @@
-# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-# SPDX-License-Identifier: MIT-0
+# Base stage: Setup and build
+FROM composer:2.7 as builder
 
-FROM composer:2.7
+# Add non-root user and group
+RUN addgroup -S nonroot && adduser -S nonroot -G nonroot
 
-# It's important to avoid running everything as root unless necessary.
-# Consider switching to a non-root user if this image is extended further.
-
-# Clone the Trivy test repo and remove lock files
+# Clone repo and remove sensitive lock files
 RUN git clone --depth 1 https://github.com/aquasecurity/trivy-ci-test.git \
     && cd trivy-ci-test \
     && rm -f Cargo.lock Pipfile.lock
 
-# Install MySQL client safely
+# Install MySQL client
 RUN apk add --no-cache mysql-client
+
+# Runtime stage: secure final image
+FROM composer:2.7
+
+# Copy non-root user from builder
+COPY --from=builder /etc/passwd /etc/passwd
+COPY --from=builder /etc/group /etc/group
+
+# Copy files from builder (optional based on your need)
+COPY --from=builder /trivy-ci-test /trivy-ci-test
+
+# Use non-root user
+USER nonroot
+
+WORKDIR /trivy-ci-test
+
+ENTRYPOINT ["sh"]
