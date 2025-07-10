@@ -4,12 +4,12 @@
 
 <a href="https://github.com/sourcefuse/terraform-aws-arc-sagemaker/releases/latest"><img src="https://img.shields.io/github/release/sourcefuse/terraform-aws-arc-sagemaker.svg?style=for-the-badge" alt="Latest Release"/></a> <a href="https://github.com/sourcefuse/terraform-aws-arc-sagemaker/commits"><img src="https://img.shields.io/github/last-commit/sourcefuse/terraform-aws-arc-sagemaker.svg?style=for-the-badge" alt="Last Updated"/></a> ![Terraform](https://img.shields.io/badge/terraform-%235835CC.svg?style=for-the-badge&logo=terraform&logoColor=white) ![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=sourcefuse_terraform-aws-arc-sagemaker&metric=alert_status&token=593eae6b5a514b62b2c08871c2f608e4ce172ec5)](https://sonarcloud.io/summary/new_code?id=sourcefuse_terraform-aws-arc-sagemaker)
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=sourcefuse_terraform-aws-arc-sagemaker&token=593eae6b5a514b62b2c08871c2f608e4ce172ec5)](https://sonarcloud.io/summary/new_code?id=sourcefuse_terraform-aws-arc-sagemaker)
 
 
 ## Overview
 
-The SourceFuse AWS ARC SageMaker Terraform module provides a robust and fully extensible solution for managing SageMaker Studio domains, user profiles, models, endpoint configurations, and pipelines. It supports advanced features such as blue/green deployments, custom app settings, and VPC integration to meet enterprise-grade machine learning needs. With dynamic configurations and secure defaults, the module enables rapid, consistent, and scalable SageMaker infrastructure provisioning using best practices.
+The ARC AWS SageMaker Terraform module provides a robust and fully extensible solution for managing SageMaker Studio domains, user profiles, models, endpoint, endpoint configurations, and pipelines. It supports custom app settings, and VPC integration to meet enterprise-grade machine learning needs. With dynamic configurations and secure defaults, the module enables rapid, consistent, and scalable SageMaker infrastructure provisioning using best practices.
 
 ## Usage
 
@@ -17,7 +17,8 @@ To see a full examples, check out the [main.tf](./examples/endpoint/main.tf) fil
 
 ```hcl
 module "sagemaker_model" {
-  source = "../.."
+  source                 = "sourcefuse/arc-sagemaker/aws"
+  version                = "0.0.1"
 
   name                   = "terraform-arc"
   create_endpoint_config = true
