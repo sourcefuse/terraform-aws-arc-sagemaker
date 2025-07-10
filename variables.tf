@@ -264,7 +264,7 @@ variable "vpc_id" {
 variable "subnet_ids" {
   description = "The VPC subnets that Studio uses for communication"
   type        = list(string)
-  default     = [""]
+  default     = []
 }
 
 variable "app_network_access_type" {
