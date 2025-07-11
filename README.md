@@ -136,19 +136,19 @@ module "sagemaker_model" {
 
 | Name | Description |
 |------|-------------|
-| <a name="output_sagemaker_domain_arn"></a> [sagemaker\_domain\_arn](#output\_sagemaker\_domain\_arn) | ARN of the SageMaker domain |
-| <a name="output_sagemaker_domain_id"></a> [sagemaker\_domain\_id](#output\_sagemaker\_domain\_id) | ID of the SageMaker domain |
-| <a name="output_sagemaker_domain_url"></a> [sagemaker\_domain\_url](#output\_sagemaker\_domain\_url) | URL to access the SageMaker Studio |
-| <a name="output_sagemaker_endpoint_arn"></a> [sagemaker\_endpoint\_arn](#output\_sagemaker\_endpoint\_arn) | ARN of the SageMaker endpoint |
-| <a name="output_sagemaker_endpoint_config_arn"></a> [sagemaker\_endpoint\_config\_arn](#output\_sagemaker\_endpoint\_config\_arn) | ARN of the SageMaker endpoint configuration |
-| <a name="output_sagemaker_endpoint_config_name"></a> [sagemaker\_endpoint\_config\_name](#output\_sagemaker\_endpoint\_config\_name) | Name of the SageMaker endpoint configuration |
-| <a name="output_sagemaker_endpoint_name"></a> [sagemaker\_endpoint\_name](#output\_sagemaker\_endpoint\_name) | Name of the SageMaker endpoint |
-| <a name="output_sagemaker_model_arn"></a> [sagemaker\_model\_arn](#output\_sagemaker\_model\_arn) | ARN of the SageMaker model |
-| <a name="output_sagemaker_model_name"></a> [sagemaker\_model\_name](#output\_sagemaker\_model\_name) | Name of the SageMaker model |
-| <a name="output_sagemaker_pipeline_arns"></a> [sagemaker\_pipeline\_arns](#output\_sagemaker\_pipeline\_arns) | List of SageMaker pipeline ARNs |
-| <a name="output_sagemaker_pipeline_names"></a> [sagemaker\_pipeline\_names](#output\_sagemaker\_pipeline\_names) | List of SageMaker pipeline names |
-| <a name="output_sagemaker_user_profile_names"></a> [sagemaker\_user\_profile\_names](#output\_sagemaker\_user\_profile\_names) | List of SageMaker user profile names |
-| <a name="output_sagemaker_user_profiles"></a> [sagemaker\_user\_profiles](#output\_sagemaker\_user\_profiles) | Map of SageMaker user profiles with their ARNs |
+| <a name="output_domain_arn"></a> [domain\_arn](#output\_domain\_arn) | ARN of the SageMaker domain |
+| <a name="output_domain_id"></a> [domain\_id](#output\_domain\_id) | ID of the SageMaker domain |
+| <a name="output_domain_url"></a> [domain\_url](#output\_domain\_url) | URL to access the SageMaker Studio |
+| <a name="output_endpoint_arn"></a> [endpoint\_arn](#output\_endpoint\_arn) | ARN of the SageMaker endpoint |
+| <a name="output_endpoint_config_arn"></a> [endpoint\_config\_arn](#output\_endpoint\_config\_arn) | ARN of the SageMaker endpoint configuration |
+| <a name="output_endpoint_config_name"></a> [endpoint\_config\_name](#output\_endpoint\_config\_name) | Name of the SageMaker endpoint configuration |
+| <a name="output_endpoint_name"></a> [endpoint\_name](#output\_endpoint\_name) | Name of the SageMaker endpoint |
+| <a name="output_model_arn"></a> [model\_arn](#output\_model\_arn) | ARN of the SageMaker model |
+| <a name="output_model_name"></a> [model\_name](#output\_model\_name) | Name of the SageMaker model |
+| <a name="output_pipeline_arns"></a> [pipeline\_arns](#output\_pipeline\_arns) | List of SageMaker pipeline ARNs |
+| <a name="output_pipeline_names"></a> [pipeline\_names](#output\_pipeline\_names) | List of SageMaker pipeline names |
+| <a name="output_user_profile_names"></a> [user\_profile\_names](#output\_user\_profile\_names) | List of SageMaker user profile names |
+| <a name="output_user_profiles"></a> [user\_profiles](#output\_user\_profiles) | Map of SageMaker user profiles with their ARNs |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Versioning  
