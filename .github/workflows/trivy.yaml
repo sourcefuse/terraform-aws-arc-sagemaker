@@ -28,7 +28,7 @@ jobs:
       - name: Set up AWS credentials
         uses: aws-actions/configure-aws-credentials@v4.0.2
         with:
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: ${{ secrets.AWS_REGION }}
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           role-session-name: GitHubActions
 
@@ -108,17 +108,17 @@ jobs:
           ]
           ' > findings.json
         env:
-          AWS_ACCOUNT_ID: ${{ env.AWS_ACCOUNT_ID }}
-          AWS_REGION: ${{ env.AWS_REGION }}
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
 
       - name: Push findings to Security Hub
         if: always()
         continue-on-error: true
         run: |
           # Check if Security Hub is enabled
-          if ! aws securityhub describe-hub --region ${{ env.AWS_REGION }} >/dev/null 2>&1; then
-            echo "⚠️ Security Hub is not enabled in region ${{ env.AWS_REGION }}"
-            echo "Enable it with: aws securityhub enable-security-hub --region ${{ env.AWS_REGION }}"
+          if ! aws securityhub describe-hub --region ${{ secrets.AWS_REGION }} >/dev/null 2>&1; then
+            echo "⚠️ Security Hub is not enabled in region ${{ secrets.AWS_REGION }}"
+            echo "Enable it with: aws securityhub enable-security-hub --region ${{ secrets.AWS_REGION }}"
             exit 0
           fi
 
@@ -133,7 +133,7 @@ jobs:
             if [ "$FINDINGS_COUNT" -gt 0 ]; then
               # Import findings to Security Hub
               aws securityhub batch-import-findings \
-                --region ${{ env.AWS_REGION }} \
+                --region ${{ secrets.AWS_REGION }} \
                 --findings file://findings.json
 
               echo "✅ $FINDINGS_COUNT findings imported to Security Hub successfully"
@@ -148,8 +148,8 @@ jobs:
         if: always()
         run: |
           echo "📊 Security Hub Integration Summary:"
-          echo "Region: ${{ env.AWS_REGION }}"
-          echo "Account ID: ${{ env.AWS_ACCOUNT_ID }}"
+          echo "Region: ${{ secrets.AWS_REGION }}"
+          echo "Account ID: ${{ secrets.AWS_ACCOUNT_ID }}"
           echo "Image scanned: test-image:latest"
 
           if [ -f findings.json ]; then
