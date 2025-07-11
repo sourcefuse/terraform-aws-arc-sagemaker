@@ -15,6 +15,7 @@ resource "aws_iam_role" "sagemaker_execution_role" {
 }
 
 resource "aws_iam_role_policy_attachment" "attach_policy" {
+  count      = var.sagemaker_execution_role ? 1 : 0
   role       = aws_iam_role.sagemaker_execution_role[0].name
   policy_arn = "arn:aws:iam::aws:policy/AmazonSageMakerFullAccess"
 }
