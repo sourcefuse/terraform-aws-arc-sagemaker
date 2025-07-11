@@ -850,6 +850,12 @@ variable "pipelines" {
   default = []
 }
 
+variable "sagemaker_execution_role" {
+  description = "Whether to create an execution role for SageMaker"
+  type        = bool
+  default     = false
+}
+
 # IAM Configuration
 variable "create_execution_role" {
   description = "Whether to create an execution role for SageMaker"
