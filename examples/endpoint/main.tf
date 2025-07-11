@@ -31,9 +31,10 @@ module "tags" {
 module "sagemaker_model" {
   source = "../.."
 
-  name                   = "terraform-arc"
-  create_endpoint_config = true
-  create_model           = true
+  name                            = "terraform-arc"
+  create_endpoint_config          = true
+  create_model                    = true
+  create_sagemaker_execution_role = true
 
 
   primary_container = {

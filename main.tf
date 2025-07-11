@@ -4,7 +4,7 @@
 resource "aws_sagemaker_model" "this" {
   count              = var.create_model ? 1 : 0
   name               = var.name
-  execution_role_arn = aws_iam_role.sagemaker_execution_role.arn
+  execution_role_arn = aws_iam_role.sagemaker_execution_role[0].arn
   tags               = var.tags
 
   dynamic "primary_container" {
@@ -362,7 +362,7 @@ resource "aws_sagemaker_domain" "this" {
           for_each = jupyter_lab_app_settings.value.emr_settings != null ? [jupyter_lab_app_settings.value.emr_settings] : []
           content {
             assumable_role_arns = emr_settings.value.assumable_role_arns
-            execution_role_arns = aws_iam_role.execution_role.arn
+            execution_role_arns = emr_settings.value.execution_role
           }
         }
       }

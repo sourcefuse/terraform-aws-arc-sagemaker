@@ -1,5 +1,6 @@
 resource "aws_iam_role" "sagemaker_execution_role" {
-  name = "${var.name}-sagemaker-execution-role"
+  count = var.create_sagemaker_execution_role ? 1 : 0
+  name  = "${var.name}-sagemaker-execution-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -14,7 +15,8 @@ resource "aws_iam_role" "sagemaker_execution_role" {
 }
 
 resource "aws_iam_role_policy_attachment" "attach_policy" {
-  role       = aws_iam_role.sagemaker_execution_role.name
+  count      = var.create_sagemaker_execution_role ? 1 : 0
+  role       = aws_iam_role.sagemaker_execution_role[0].name
   policy_arn = "arn:aws:iam::aws:policy/AmazonSageMakerFullAccess"
 }
 # IAM Role for SageMaker Execution
