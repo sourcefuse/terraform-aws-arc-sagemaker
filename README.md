@@ -9,11 +9,37 @@
 
 ## Overview
 
-The ARC AWS SageMaker Terraform module provides a robust and fully extensible solution for managing SageMaker Studio domains, user profiles, models, endpoint, endpoint configurations, and pipelines. It supports custom app settings, and VPC integration to meet enterprise-grade machine learning needs. With dynamic configurations and secure defaults, the module enables rapid, consistent, and scalable SageMaker infrastructure provisioning using best practices.
+The ARC Terraform module provides a robust and fully extensible solution for managing SageMaker Studio domains, user profiles, models, endpoint, endpoint configurations, and pipelines. It supports custom app settings, and VPC integration to meet enterprise-grade machine learning needs. With dynamic configurations and secure defaults, the module enables rapid, consistent, and scalable SageMaker infrastructure provisioning using best practices.
 
-## Usage
+### Prerequisites
+Before using this module, ensure you have the following:
 
-To see a full examples, check out the [main.tf](./examples/endpoint/main.tf) file in the example folder.  
+- AWS credentials configured.
+- Terraform installed.
+- A working knowledge of Terraform.
+
+## Getting Started
+
+1. **Define the Module**
+
+Initially, it's essential to define a Terraform module, which is organized as a distinct directory encompassing Terraform configuration files. Within this module directory, input variables and output values must be defined in the variables.tf and outputs.tf files, respectively. The following illustrates an example directory structure:
+
+
+
+```plaintext
+sagemaker/
+|-- main.tf
+|-- variables.tf
+|-- outputs.tf
+```
+
+
+2. **Define Input Variables**
+
+Inside the `variables.tf` or in `*.tfvars` file, you should define values for the variables that the module requires.
+
+3. **Use the Module in Your Main Configuration**
+In your main Terraform configuration file (e.g., main.tf), you can use the module. Specify the source of the module, and version, For Example
 
 ```hcl
 module "sagemaker_model" {
@@ -41,6 +67,81 @@ module "sagemaker_model" {
   ]
   tags = module.tags.tags
 }
+```
+
+4. **Output Values**
+
+Inside the `outputs.tf` file of the module, you can define output values that can be referenced in the main configuration. For example:
+
+```hcl
+output "model_name" {
+  description = "Name of the SageMaker model"
+  value       = module.sagemaker_model.model_name
+}
+
+output "model_arn" {
+  description = "ARN of the SageMaker model"
+  value       = module.sagemaker_model.model_arn
+}
+
+output "endpoint_config_arn" {
+  description = "ARN of the SageMaker endpoint configuration"
+  value       = module.sagemaker_model.endpoint_config_arn
+}
+
+```
+
+5. **.tfvars**
+
+Inside the `.tfvars` file of the module, you can provide desired values that can be referenced in the main configuration.
+
+
+## First Time Usage
+***uncomment the backend block in [main.tf](./examples/endpoint//main.tf)***
+```shell
+terraform init -backend-config=config.dev.hcl
+```
+***If testing locally, `terraform init` should be fine***
+
+Create a `dev` workspace
+```shell
+terraform workspace new dev
+```
+
+Plan Terraform
+```shell
+terraform plan -var-file dev.tfvars
+```
+
+Apply Terraform
+```shell
+terraform apply -var-file dev.tfvars
+```
+
+## Production Setup
+```shell
+terraform init -backend-config=config.prod.hcl
+```
+
+Create a `prod` workspace
+```shell
+terraform workspace new prod
+```
+
+Plan Terraform
+```shell
+terraform plan -var-file prod.tfvars
+```
+
+Apply Terraform
+```shell
+terraform apply -var-file prod.tfvars  
+```
+
+## Cleanup  
+Destroy Terraform
+```shell
+terraform destroy -var-file dev.tfvars
 ```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
