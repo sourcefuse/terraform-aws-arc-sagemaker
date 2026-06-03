@@ -240,7 +240,6 @@ By specifying this , it will bump the version and if you don't specify this in y
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for commit conventions and development setup.
 
-
 ## Authors
 
 This project is authored by:
