@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
 
-      - uses: terraform-linters/setup-tflint@v1
+      - uses: terraform-linters/setup-tflint@v4
         with:
           tflint_version: latest
 
